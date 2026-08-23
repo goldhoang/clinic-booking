@@ -20,7 +20,8 @@ export async function middleware(req: NextRequest) {
   // Landing page is public; login/register are public but redirect if already signed in
   const marketingPaths = ['/']
   const authPaths = ['/login', '/register']
-  const publicPaths = [...marketingPaths, ...authPaths]
+  const publicApiPaths = ['/api/health']
+  const publicPaths = [...marketingPaths, ...authPaths, ...publicApiPaths]
 
   const { data: { session } } = await supabase.auth.getSession()
 
