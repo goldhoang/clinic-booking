@@ -5,8 +5,8 @@ on:
     branches: [main, master]
   pull_request:
   schedule:
-    # Quét hàng ngày 02:00 UTC (~09:00 VN)
-    - cron: "0 2 * * *"
+    # Quét định kỳ thứ 2 hàng tuần lúc 02:00 UTC (~09:00 VN)
+    - cron: "0 2 * * 1"
   workflow_dispatch:
 
 permissions:
