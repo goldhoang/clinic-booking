@@ -1,29 +1,52 @@
-# Dependabot: tự mở PR khi dependency có bản vá bảo mật / phiên bản mới
+# Dependabot: tự mở PR cập nhật định kỳ hàng tháng và bản vá bảo mật
 version: 2
 updates:
   - package-ecosystem: npm
     directory: /
     schedule:
-      interval: weekly
+      interval: monthly
       day: monday
       time: "09:00"
       timezone: Asia/Ho_Chi_Minh
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 5
     labels:
       - dependencies
-      - security
     commit-message:
       prefix: "chore(deps)"
+    ignore:
+      # Chặn Dependabot tự ý nâng cấp Major các thư viện cốt lõi gây breaking changes
+      - dependency-name: "prisma"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@prisma/client"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "next"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "react"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "react-dom"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "eslint"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "eslint-config-next"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "typescript"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "tailwindcss"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "uuid"
+        update-types: ["version-update:semver-major"]
     groups:
       production-deps:
         dependency-type: production
+        update-types: ["minor", "patch"]
       development-deps:
         dependency-type: development
+        update-types: ["minor", "patch"]
 
   - package-ecosystem: github-actions
     directory: /
     schedule:
-      interval: weekly
+      interval: monthly
       day: monday
     labels:
       - dependencies

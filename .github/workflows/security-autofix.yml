@@ -1,11 +1,11 @@
 name: Security Autofix PR
 
 # Bot tự tạo PR khi phát hiện lỗ hổng dependency có thể vá bằng npm.
-# Bạn chỉ cần review + merge. (RLS/Supabase advisor vẫn cần chạy migration SQL.)
+# Chạy định kỳ hàng tháng hoặc kích hoạt thủ công (workflow_dispatch).
 
 on:
   schedule:
-    - cron: "0 3 * * 1" # Thứ 2 hàng tuần 03:00 UTC
+    - cron: "0 3 1 * *" # Ngày 1 hàng tháng 03:00 UTC
   workflow_dispatch:
 
 permissions:
@@ -34,7 +34,7 @@ jobs:
         run: |
           before=$(npm audit --json 2>/dev/null | node -e "let d='';process.stdin.on('data',c=>d+=c);process.stdin.on('end',()=>{try{const j=JSON.parse(d);console.log(j.metadata?.vulnerabilities?.total??0)}catch{console.log(0)}})")
           npm audit fix --omit=dev || true
-          npm install postcss@^8.5.26 --save-dev || true
+          npm install postcss@^8.5.30 --save-dev || true
           after=$(npm audit --json 2>/dev/null | node -e "let d='';process.stdin.on('data',c=>d+=c);process.stdin.on('end',()=>{try{const j=JSON.parse(d);console.log(j.metadata?.vulnerabilities?.total??0)}catch{console.log(0)}})")
           echo "before=$before" >> "$GITHUB_OUTPUT"
           echo "after=$after" >> "$GITHUB_OUTPUT"
